@@ -25,7 +25,6 @@ const users = require('./controllers/user.controller')
 
 app.use('/user',users);
 
-app.use('/user', users);
 
 
 app.get('/test', (req, res) => {
