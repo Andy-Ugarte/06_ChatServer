@@ -39,6 +39,7 @@ const encryptPassword = (password) => {
     }
   });
 
+
 router.post('/login', async function (req, res){
     try {
         const user = await User.findOne ({ email: email});
