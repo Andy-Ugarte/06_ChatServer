@@ -17,7 +17,7 @@ app.use(express.json());
 
 //! PLACE CONTROLLERS HERE
 
-const users = require('./controllers/user.controller')
+const users = require('./Controllers/user.controller')
 
 
 
