@@ -38,7 +38,8 @@ const encryptPassword = (password) => {
         });
     }
   });
-// any comment on a new line
+
+
 router.post('/login', async function (req, res){
     try {
         const user = await User.findOne ({ email: email});

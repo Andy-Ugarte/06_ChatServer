@@ -26,8 +26,6 @@ const users = require('./Controllers/user.controller')
 app.use('/user',users);
 
 
-
-
 app.get('/test', (req, res) => {
     res.status(200).json({ message: "Server is accessible", port: process.env.PORT });
     //* process.env will access the ".env" file, and we can dot notation to get whatever specific value we want from that file
