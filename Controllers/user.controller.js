@@ -17,7 +17,7 @@ const encryptPassword = (password) => {
   
   try {
     const user = new User ({
-        firstName: req.body.firstName,
+        userName: req.body.userName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 13)
     });
