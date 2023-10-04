@@ -17,7 +17,7 @@ const encryptPassword = (password) => {
   
   try {
     const user = new User ({
-        firstName: req.body.firstName,
+        userName: req.body.userName,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 13)
     });
@@ -38,7 +38,7 @@ const encryptPassword = (password) => {
         });
     }
   });
-
+// any comment on a new line
 router.post('/login', async function (req, res){
     try {
         const user = await User.findOne ({ email: email});
