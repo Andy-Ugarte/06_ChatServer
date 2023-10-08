@@ -21,7 +21,7 @@ const MessageRoomSchema = new mongoose.Schema({
     type: [],
   },
   ownerId: {
-    type: String,
+    type: _id, // check with someone before
     required: true
   }
 });
