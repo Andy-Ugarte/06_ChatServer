@@ -10,13 +10,12 @@ const router = require("express").Router();
 //TODO  Create a Room (POST)
 const Room = require("../models/messageRooms.model");
 
-router.post("/chatRoom", async (req, res) => {
+router.post("/chatRoom", validatesession async (req, res) => {
     try {
         const chatRoom = {
             title: req.body.title,
             description: req.body.description,
             messages: req.body.messages,
-            ownerId: req.body.ownerId,
             owner: req.user._id
             
         }
