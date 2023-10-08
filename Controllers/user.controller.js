@@ -19,7 +19,7 @@ const encryptPassword = (password) => {
     const user = new User ({
         userName: req.body.userName,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 13)
+        password: bcrypt.hashSync(req.body.password, 10)
     });
 
     const newUser = await user.save();
@@ -42,12 +42,14 @@ const encryptPassword = (password) => {
 
 router.post('/login', async function (req, res){
     try {
+        const{email,password} = req.body
+
         const user = await User.findOne ({ email: email});
     if (!user) throw new Error('Email or password does not match');
 
-    const token = jwt.sign({ id: user._id}, process.env.JWT,{ expiresIn: '1 day'});
+    const token = jwt.sign({ id: user._id},process.env.JWT,{ expiresIn: '1 day'});
 
-    const passwordMatch = await bcrypt.compare(password, user.passwords);
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) throw new Error('Email or Password does not match');
 
