@@ -9,7 +9,8 @@ const validateSessions = require('../middleware/validatesession')
 //TODO  Create a Room (POST)
 const Room = require("../models/messageRooms.model");
 
-router.post("/chatRoom",validateSessions, async (req, res) => {
+router.post("/chatRoom", validatesession async (req, res) => {
+
     try {
         const chatRoom = {
             title: req.body.title,
