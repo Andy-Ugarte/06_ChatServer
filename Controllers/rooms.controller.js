@@ -4,13 +4,13 @@
 // update - patch - change status 
 // delete - delete 
 
-const router = require("express").Router();
-
-
+const router = require("express").Router()
+const validateSessions = require('../middleware/validatesession')
 //TODO  Create a Room (POST)
 const Room = require("../models/messageRooms.model");
 
 router.post("/chatRoom", validatesession async (req, res) => {
+
     try {
         const chatRoom = {
             title: req.body.title,
@@ -26,19 +26,19 @@ router.post("/chatRoom", validatesession async (req, res) => {
 
 //TODO  Get one room (GET)
 
-router.get('/room/:id', async (req, res) => {
+router.get('/room/:id',validateSessions, async (req, res) => {
 //room: req.params.room_id (mongo) id
     try {
         const singleRoom = await Room.findOne({_id: req.params.id }); 
         const room = await Room.findById(singleRoom.owner);
-        res.status(200).json({ found: singleRoom, owner: user});
+        res.status(200).json({ found: singleRoom, owner: room});
     }   catch (err) {
         errorResponse(res, err);
     }
 }); 
 
 //TODO  Get all Rooms (GET)
-router.get("/list", async (req, res) => {
+router.get("/list",validateSessions, async (req, res) => {
     try {
         console.log('user:', req.user.id);
         const getAllRooms = await Room.find();
@@ -56,3 +56,5 @@ router.get("/list", async (req, res) => {
 
 
 //TODO  Delete a Room (DELETE)
+
+module.exports = router;
