@@ -20,8 +20,8 @@ const MessageRoomSchema = new mongoose.Schema({
     required: true,
     type: [],
   },
-  ownerId: {
-    type: String,
+  owner: {
+    type: String, // check with someone before
     required: true
   }
 });

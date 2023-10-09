@@ -9,8 +9,8 @@ const messagesSchema= new mongoose.Schema({
     type: String,
     required: true
   },
-  owner:_id,
-  room:_id
+  //owner:_id,
+  //room:_id
 });
 
 module.exports=mongoose.model('messages',messagesSchema);
