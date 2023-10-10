@@ -1,9 +1,3 @@
-// create room - post - client/user creating
-// get one room - get - find info that soeone else creates
-// get all rooms - get - 
-// update - patch - change status 
-// delete - delete 
-
 const router = require("express").Router()
 const validateSessions = require('../middleware/validatesession')
 //TODO  Create a Room (POST)
@@ -53,8 +47,42 @@ router.get("/list",validateSessions, async (req, res) => {
 
 
 //TODO  Update a Room (PATCH)
+router.patch('/:id', async (req, res)=>{
+    try {
+        let _id = params.id;
+        let owner = req.user.id;
+
+        console.log(_id);
+        console.log(owner);
+
+        let updatedInfo = req.body;
+        const updated = await room.findOneAndUpdate({ _id },
+            updatedInfo, { new: true });
+            if (!updated)
+                throw new Error("Invalid Room/User Combination");
+
+            res.status(200).json({
+                message: `${updated._id} Updated!`, updated
+            });
+    } catch (err) {
+        errorResponse(res, err);
+    }
+})
 
 
 //TODO  Delete a Room (DELETE)
+router.delete('/:id', async function(req, res){
+    try {
+        let {id} = req.params;
+        const deleteRoom = await Room.deleteOne({ _id: id})
+        res.status(200).json ({
+            message: 'Room Deleted!',
+            deletedRoom
+        });
+    } catch(err){
+        errorResponse(res, err);
+    }
+})
+
 
 module.exports = router;
