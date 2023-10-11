@@ -15,12 +15,12 @@ router.post("/chatRoom", validateSessions, async (req, res) => {
             owner: req.user._id
             
         }
-        const room = new Room(chatroom);
+        const room = new Room(chatRoom);
 
         const newRoom = await room.save();
             
         res.status(200).json({ 
-            message: "new room"
+            message: "new Room",
             room: newRoom
         })
             
