@@ -1,5 +1,7 @@
 const router = require("express").Router()
 const validateSessions = require('../middleware/validatesession')
+
+
 //TODO  Create a Room (POST)
 const Room = require("../models/messageRooms.model");
 
@@ -13,6 +15,17 @@ router.post("/chatRoom", validateSessions, async (req, res) => {
             owner: req.user._id
             
         }
+        const room = new Room(chatroom);
+
+        const newRoom = await room.save();
+            
+        res.status(200).json({ 
+            message: "new room"
+            room: newRoom
+        })
+            
+
+
     } catch (err) {
         errorResponse(res, err);
     } 
