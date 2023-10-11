@@ -13,6 +13,15 @@ router.post("/chatRoom", validateSessions, async (req, res) => {
             owner: req.user._id
             
         }
+
+        const room = new Room(chatRoom);
+
+        const newRoom = await room.save();
+
+        res.status(200).json({
+            message: "New Room Created!",
+            room: newRoom
+        });
     } catch (err) {
         errorResponse(res, err);
     } 
