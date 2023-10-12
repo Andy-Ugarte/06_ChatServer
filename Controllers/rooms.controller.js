@@ -98,7 +98,7 @@ router.delete('/:id', async function(req, res){
         const deleteRoom = await Room.deleteOne({ _id: id})
         res.status(200).json ({
             message: 'Room Deleted!',
-            deletedRoom
+            deleteRoom
         });
     } catch(err){
         errorResponse(res, err);
