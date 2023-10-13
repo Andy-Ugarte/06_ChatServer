@@ -19,12 +19,13 @@ app.use(express.json());
 
 const users = require('./Controllers/user.controller');
 const rooms = require('./Controllers/rooms.controller');
-
+const messages = require('./Controllers/messages.controller')
 
 
 
 app.use('/user',users);
 app.use('/room',rooms);
+app.use('/message',messages)
 
 app.get('/test', (req, res) => {
     res.status(200).json({ message: "Server is accessible", port: process.env.PORT });
