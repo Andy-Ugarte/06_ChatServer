@@ -22,7 +22,6 @@ const rooms = require('./Controllers/rooms.controller');
 
 
 
-
 app.use('/user',users);
 app.use('/room',rooms);
 
