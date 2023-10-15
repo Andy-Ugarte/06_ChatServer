@@ -25,10 +25,15 @@ router.post("/create/:room_id",validateSession, async(req,res)=>{
       owner: req.user,
       room: req.params.room_id
     }
-    const newMessage = messagePost.save()
-    res.json({
-      content: newMessage,
-      message:"new message created"
+    
+    const message = new Messages(messagePost)
+
+    const newMessage = await message.save()
+   
+    res.status(200).json({
+      message:"new message created",
+      newMessage
+     //text: newMessage
     })
   }catch (err){
     errorResponse(res,err)
@@ -36,32 +41,33 @@ router.post("/create/:room_id",validateSession, async(req,res)=>{
 })
 
 
+
 //TODO - get for seeing messages
 
-router.get("/allMessages/:room_id",validateSession,async(res,req)=>{
+router.get("/allMessages/:room_id",validateSession,async(req,res)=>{
   try{
-    const allMessages= await Messages.find();
+    const allMessages= await Messages.find({ room: req.params.room_id});
     
     allMessages.length > 0?
     res.status(200).json({ allMessages })
     :
-    res.status(404).json({ message: "No Pizzas Found" });
+    res.status(404).json({ message: "No Messages Found" });
   }catch(err){
     errorResponse(res,err);
   }
 })
 //TODO - patch for updating message (validate session)
 
-router.patch('/:room_id',validateSession, async(req,res)=>{
+router.patch('/:message_id',validateSession, async(req,res)=>{
   try{
-    let _id= req.params.id
-    let owner= req.user.id
-    let upadtedInfo= req.body
-
-    const updated = await User.findOneAndUpdate({_id,owner},upadtedInfo,{new: true})
-    if(!updated) throw new Error("invalid room/User combination")
+    console.log(req.user._id)
+    //let _id= req.params.message_id
+    //let owner= req.user._id
+    let updatedInfo= req.body
+    const updated = await Messages.findOneAndUpdate({_id:req.params.message_id,owner: req.user._id},updatedInfo,{new: true})
+   // if(!updated) throw new Error("invalid room/User combination")
     res.status(200).json({
-      message:`${updated._id} Updated!`,
+      message:`Updated!`,
       updated
    });
   }catch (err){

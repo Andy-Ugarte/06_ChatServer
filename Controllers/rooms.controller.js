@@ -1,6 +1,12 @@
 const router = require("express").Router()
 const validateSessions = require('../middleware/validatesession')
 
+function errorResponse(res, err) {
+    res.status(500).json({
+      ERROR: err.message,
+    });
+  };
+  
 
 //TODO  Create a Room (POST)
 const Room = require("../models/messageRooms.model");
@@ -29,9 +35,25 @@ router.post("/chatRoom", validateSessions, async (req, res) => {
     } 
 });
 
+
+//TODO  Get all Rooms (GET)
+router.get("/list", async (req, res) => {
+    try {
+        //console.log('user:', req.user.id);
+        const getAllRooms = await Room.find();
+        // res.status(200).json({ getAllRooms, message: "Success!" })
+        getAllRooms.length > 0 ?
+            res.status(200).json({getAllRooms})
+            :
+            res.status(404).json({ message: "No Rooms Found"});    
+        } catch (err) {
+            errorResponse(res, err)
+        }
+});
+
 //TODO  Get one room (GET)
 
-router.get('/room/:id',validateSessions, async (req, res) => {
+router.get('/:id',validateSessions, async (req, res) => {
 //room: req.params.room_id (mongo) id
     try {
         const singleRoom = await Room.findOne({_id: req.params.id }); 
@@ -42,32 +64,20 @@ router.get('/room/:id',validateSessions, async (req, res) => {
     }
 }); 
 
-//TODO  Get all Rooms (GET)
-router.get("/list",validateSessions, async (req, res) => {
-    try {
-        console.log('user:', req.user.id);
-        const getAllRooms = await Room.find();
-        getAllRooms.length > 0 ?
-            res.status(200).json({getAllRooms})
-            :
-            res.status(404).json({ messages: "No Rooms Found"});    
-        } catch (err) {
-            
-        }
-})
+
 
 
 //TODO  Update a Room (PATCH)
-router.patch('/:id', async (req, res)=>{
+router.patch('/:id', validateSessions, async (req, res)=>{
     try {
-        let _id = params.id;
-        let owner = req.user.id;
+       let _id = req.params.id;
+    //    let owner = req.user.id;
 
         console.log(_id);
-        console.log(owner);
+      //  console.log(owner);
 
         let updatedInfo = req.body;
-        const updated = await room.findOneAndUpdate({ _id },
+        const updated = await Room.findOneAndUpdate({ _id, owner: req.user._id  } ,
             updatedInfo, { new: true });
             if (!updated)
                 throw new Error("Invalid Room/User Combination");
@@ -88,7 +98,7 @@ router.delete('/:id', async function(req, res){
         const deleteRoom = await Room.deleteOne({ _id: id})
         res.status(200).json ({
             message: 'Room Deleted!',
-            deletedRoom
+            deleteRoom
         });
     } catch(err){
         errorResponse(res, err);
