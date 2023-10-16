@@ -22,7 +22,7 @@ router.post("/create/:room_id",validateSession, async(req,res)=>{
     const messagePost= {
       date: new Date().getFullYear(),
       text: req.body.text,
-      owner: req.user,
+      owner: req.user._id,
       room: req.params.room_id
     }
     
@@ -77,12 +77,12 @@ router.patch('/:message_id',validateSession, async(req,res)=>{
 
 //TODO - delete for delete message (validate session)
 
-router.delete('/:room_id',validateSession, async(req,res)=>{
+router.delete('/:message_id',validateSession, async(req,res)=>{
 try{
-  let {id} = req.params
-  let owner = req.user.id
+  let {message_id} = req.params
+  let owner = req.user._id
 
-  const deleteMessage = await Messages.deleteOne({_id:id,owner})
+  const deleteMessage = await Messages.deleteOne({_id: message_id,owner})
   if(!deleteMessage.deletedCount){
     throw new Error('could not find message')
   }
