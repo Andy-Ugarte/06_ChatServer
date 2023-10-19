@@ -22,6 +22,7 @@ const rooms = require('./Controllers/rooms.controller');
 const messages = require('./Controllers/messages.controller')
 
 
+
 app.use('/user',users);
 app.use('/room',rooms);
 app.use('/message',messages)

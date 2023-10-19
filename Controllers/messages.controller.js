@@ -33,7 +33,6 @@ router.post("/create/:room_id",validateSession, async(req,res)=>{
     res.status(200).json({
       message:"new message created",
       newMessage
-     //text: newMessage
     })
   }catch (err){
     errorResponse(res,err)
@@ -41,14 +40,13 @@ router.post("/create/:room_id",validateSession, async(req,res)=>{
 })
 
 
-
 //TODO - get for seeing messages
 
 router.get("/allMessages/:room_id",validateSession,async(req,res)=>{
   try{
-    const allMessages= await Messages.find({ room: req.params.room_id});
-    
-    allMessages.length > 0?
+    const allMessages= await Messages.find({ room: req.params.room_id}); 
+    console.log(allMessages)
+    allMessages.length > 0 ?
     res.status(200).json({ allMessages })
     :
     res.status(404).json({ message: "No Messages Found" });
