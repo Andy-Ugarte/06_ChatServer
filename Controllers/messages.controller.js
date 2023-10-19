@@ -28,11 +28,11 @@ router.post("/create/:room_id",validateSession, async(req,res)=>{
     
     const message = new Messages(messagePost)
 
-    const newMessage = message.save()
+    const newMessage = await message.save()
    
     res.status(200).json({
       message:"new message created",
-      text: newMessage
+      newMessage
     })
   }catch (err){
     errorResponse(res,err)
@@ -40,18 +40,19 @@ router.post("/create/:room_id",validateSession, async(req,res)=>{
 })
 
 
-//TODO - get for seeing messages
+//TODO - get ALL messages
 
-router.get("/allMessages/:room_id",validateSession,async(res,req)=>{
+router.get("/:room_id",validateSession,async(req,res)=>{
   try{
-    const allMessages= await Messages.find();
     
-    allMessages.length > 0?
+    const allMessages= await Messages.find({room:req.params.room_id});
+    console.log(allMessages)
+    allMessages.length > 0 ?
     res.status(200).json({ allMessages })
     :
     res.status(404).json({ message: "No Messages Found" });
-  }catch(err){
-    errorResponse(res,err);
+  }catch(error){
+    res.json({message: error.message})
   }
 })
 //TODO - patch for updating message (validate session)
