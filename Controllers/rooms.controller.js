@@ -70,14 +70,11 @@ router.get('/:id',validateSessions, async (req, res) => {
 //TODO  Update a Room (PATCH)
 router.patch('/:id', validateSessions, async (req, res)=>{
     try {
-        let _id = req.params.id;
-    //    let owner = req.user.id;
-
+       let _id = req.params.id;
         console.log(_id);
-      //  console.log(owner);
-
         let updatedInfo = req.body;
-        const updated = await Room.findOneAndUpdate({ _id, owner: req.user._id },
+        const updated = await Room.findOneAndUpdate({ _id, owner: req.user._id  } ,
+
             updatedInfo, { new: true });
             if (!updated)
                 throw new Error("Invalid Room/User Combination");
